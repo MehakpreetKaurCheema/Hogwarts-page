@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hogwarts Universe</title>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --gryffindor-red: #740001;
+            --gryffindor-gold: #d3a625;
+            --slytherin-green: #1a472a;
+            --slytherin-silver: #5d5d5d;
+            --ravenclaw-blue: #0e1a40;
+            --ravenclaw-bronze: #946b2d;
+            --hufflepuff-yellow: #ecb939;
+            --hufflepuff-black: #372e29;
+            --parchment: #f5e7c1;
+        }
+        
+        body {
+            background: url('images/hogwarts-bg.jpg') fixed;
+            background-size: cover;
+            font-family: 'MedievalSharp', cursive;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--gryffindor-gold);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, 
+                var(--gryffindor-red) 25%, 
+                var(--hufflepuff-yellow) 25% 50%, 
+                var(--ravenclaw-blue) 50% 75%, 
+                var(--slytherin-green) 75%);
+        }
+        
+        h1 {
+            font-family: 'Cinzel Decorative', cursive;
+            color: var(--gryffindor-gold);
+            font-size: 3.5rem;
+            margin: 10px 0;
+            letter-spacing: 2px;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            background: rgba(20, 20, 40, 0.9);
+            border-radius: 0 0 15px 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tab-btn {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            color: #d4af37;
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            flex: 1;
+            max-width: 200px;
+            text-align: center;
+        }
+        
+        .tab-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+            color: #fff;
+        }
+        
+        .tab-btn.active {
+            background: rgba(212, 175, 55, 0.4);
+            color: #fff;
+        }
+        
+        .tab-btn i {
+            margin-right: 10px;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 30px;
+            background: url('images/parchment-texture.jpg');
+            background-size: cover;
+            border-radius: 0 0 15px 15px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid #c9a66b;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .sorting-hat {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            background: url('images/sorting-hat.png') center/contain no-repeat;
+            transition: all 0.5s;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .sorting-hat:hover {
+            transform: scale(1.1) rotate(-5deg);
+        }
+        
+        .sorting-hat.talking {
+            animation: talk 0.5s infinite alternate;
+        }
+        
+        @keyframes talk {
+            0% { transform: translateY(0) rotate(0); }
+            100% { transform: translateY(-10px) rotate(5deg); }
+        }
+        
+        .house-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .house-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .house-card:hover {
+            transform: translateY(-10px) scale(1.03);
+        }
+        
+        .house-card.gryffindor {
+            border-top: 5px solid var(--gryffindor-red);
+        }
+        
+        .house-card.slytherin {
+            border-top: 5px solid var(--slytherin-green);
+        }
+        
+        .house-card.ravenclaw {
+            border-top: 5px solid var(--ravenclaw-blue);
+        }
+        
+        .house-card.hufflepuff {
+            border-top: 5px solid var(--hufflepuff-yellow);
+        }
+        
+        .house-img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .house-info {
+            padding: 15px;
+        }
+        
+        .house-info h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 1.5rem;
+        }
+        
+        .spell {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border-left: 5px solid #5d2e0a;
+        }
+        
+        .spell h3 {
+            color: #5d2e0a;
+            margin-top: 0;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                max-width: 100%;
+            }
+        }
+        /* PASTE THIS ENTIRE CSS SECTION */
+.floating-candles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.candle {
+    position: absolute;
+    width: 24px;
+    height: 48px;
+    background: url('images/candle.png') center/contain no-repeat;
+    filter: drop-shadow(0 0 8px rgba(255, 160, 40, 0.7));
+    animation: float 15s infinite linear;
+}
+
+/* Candle positions */
+.candle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+.candle:nth-child(2) { left: 25%; top: 30%; animation-delay: -3s; }
+.candle:nth-child(3) { left: 70%; top: 25%; animation-delay: -5s; }
+.candle:nth-child(4) { left: 45%; top: 15%; animation-delay: -7s; }
+.candle:nth-child(5) { left: 85%; top: 35%; animation-delay: -10s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-20px) rotate(2deg); }
+    50% { transform: translateY(0) rotate(0deg); }
+    75% { transform: translateY(20px) rotate(-2deg); }
+}
+
+/* Make sure header has position relative */
+.hogwarts-header {
+    position: relative;
+    /* Keep your existing header styles */
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+                <div class="floating-candles">
+        <div class="candle"></div>
+        <div class="candle"></div>
+        <div class="candle"></div>
+        <div class="candle"></div>
+        <div class="candle"></div>
+    </div>
+            <h1>Hogwarts Universe</h1>
+            <p style="color: saddlebrown; font-size: 1.2rem;">Your complete magical companion</p>
+        </header>
+        
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="home">
+                <i class="fas fa-home"></i> Home
+            </button>
+            <button class="tab-btn" data-tab="houses">
+                <i class="fas fa-flag"></i> Houses
+            </button>
+            <button class="tab-btn" data-tab="spells">
+                <i class="fas fa-magic"></i> Spells
+            </button>
+            <button class="tab-btn" data-tab="sorting">
+                <i class="fas fa-hat-wizard"></i> Sorting Hat
+            </button>
+            <button class="tab-btn" data-tab="quiz">
+                <i class="fas fa-question-circle"></i> Quiz
+            </button>
+        </div>
+        
+        <div id="home" class="tab-content active">
+            <h2>Welcome to Hogwarts!</h2>
+            <p>Step into the magical world of Harry Potter. Explore the four houses, learn spells, get sorted, and test your knowledge!</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <!-- REPLACE THIS WITH YOUR HOGWARTS CASTLE IMAGE -->
+                <img src="images/hogwarts-crest.png" alt="Hogwarts Castle" style="max-width: 100%; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+            </div>
+            
+            <div class="house-cards">
+                <div class="house-card gryffindor" onclick="showHouseInfo('gryffindor')">
+                    <!-- REPLACE THIS WITH YOUR GRYFFINDOR IMAGE -->
+                    <img src="images/gryffindor.jpg" alt="Gryffindor" class="house-img">
+                    <div class="house-info">
+                        <h3>Gryffindor</h3>
+                        <p>Where dwell the brave at heart!</p>
+                    </div>
+                </div>
+                
+                <div class="house-card slytherin" onclick="showHouseInfo('slytherin')">
+                    <!-- REPLACE THIS WITH YOUR SLYTHERIN IMAGE -->
+                    <img src="images/slytherin.jpg" alt="Slytherin" class="house-img">
+                    <div class="house-info">
+                        <h3>Slytherin</h3>
+                        <p>Those cunning folk use any means!</p>
+                    </div>
+                </div>
+                
+                <div class="house-card ravenclaw" onclick="showHouseInfo('ravenclaw')">
+                    <!-- REPLACE THIS WITH YOUR RAVENCLAW IMAGE -->
+                    <img src="images/ravenclaw.jpg" alt="Ravenclaw" class="house-img">
+                    <div class="house-info">
+                        <h3>Ravenclaw</h3>
+                        <p>Wit beyond measure is man's greatest treasure!</p>
+                    </div>
+                </div>
+                
+                <div class="house-card hufflepuff" onclick="showHouseInfo('hufflepuff')">
+                    <!-- REPLACE THIS WITH YOUR HUFFLEPUFF IMAGE -->
+                    <img src="images/hufflepuff.jpg" alt="Hufflepuff" class="house-img">
+                    <div class="house-info">
+                        <h3>Hufflepuff</h3>
+                        <p>Where they are just and loyal!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="houses" class="tab-content">
+            <h2>The Four Houses</h2>
+            <div id="house-details"></div>
+        </div>
+        
+        <div id="spells" class="tab-content">
+            <h2>Magical Spells</h2>
+            
+            <div class="spell">
+                <h3>Expelliarmus</h3>
+                <p>The Disarming Charm - knocks the victim's weapon (usually a wand) out of their hand.</p>
+                <p><strong>Pronunciation:</strong> ex-pel-ee-AR-mus</p>
+            </div>
+            
+            <div class="spell">
+                <h3>Lumos</h3>
+                <p>Creates a small light at the end of the caster's wand.</p>
+                <p><strong>Pronunciation:</strong> LOO-mos</p>
+            </div>
+            
+            <div class="spell">
+                <h3>Wingardium Leviosa</h3>
+                <p>Makes objects fly or levitate.</p>
+                <p><strong>Pronunciation:</strong> win-GAR-dee-um levi-O-sa</p>
+            </div>
+            
+            <div class="spell">
+                <h3>Expecto Patronum</h3>
+                <p>Conjures a Patronus to ward off Dementors.</p>
+                <p><strong>Pronunciation:</strong> ex-PEK-toh pa-TROH-num</p>
+            </div>
+        </div>
+        
+        <div id="sorting" class="tab-content">
+            <h2>The Sorting Ceremony</h2>
+            
+            <div style="text-align: center;">
+                <div class="sorting-hat" id="sortingHat"></div>
+                <button id="sortMeBtn" style="margin: 20px 0; padding: 12px 25px; background: #5d2e0a; color: #d4af37; border: none; border-radius: 5px; font-family: 'Cinzel Decorative', cursive; font-size: 1.2rem; cursor: pointer;">
+                    Put on the Sorting Hat!
+                </button>
+                <p style="margin: 15px 0 10px;">
+    <a href="https://wizardmore.com/sorting-hat/" 
+       target="_blank"
+       style="color: #d4af37; text-decoration: underline;">
+       Official Sorting Hat Quiz →
+    </a>
+</p>
+                <div id="sortingResult" style="font-size: 1.5rem; font-weight: bold; min-height: 50px;"></div>
+            </div>
+            
+            <div id="houseResult" style="text-align: center; margin-top: 30px;"></div>
+        </div>
+        
+        <div id="quiz" class="tab-content">
+            <h2>Wizarding World Quiz</h2>
+            <div id="quizContainer"></div>
+            <div id="quizResult" style="text-align: center; margin-top: 20px; font-size: 1.3rem;"></div>
+        </div>
+<p style="margin: 15px 0 10px;">
+    <a href="https://www.bloomsbury.com/in/discover/harry-potter/games-quizzes/harry-potter-trivia-challenge/" 
+       target="_blank"
+       style="color: #d4af37; text-decoration: underline;">
+       Hogwarts Quiz →
+    </a>
+</p>
+    </div>
+
+    <script>
+        // Tab functionality
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.getAttribute('data-tab');
+                
+                // Remove active class from all buttons and contents
+                tabBtns.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked button and corresponding content
+                btn.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+                
+                // Load content dynamically if needed
+                if (tabId === 'quiz') {
+                    loadQuiz();
+                } else if (tabId === 'houses') {
+                    loadHouseDetails();
+                }
+            });
+        });
+        
+        // House details
+        const houses = {
+            gryffindor: {
+                name: "Gryffindor",
+                founder: "Godric Gryffindor",
+                colors: "Scarlet and Gold",
+                animal: "Lion",
+                traits: "Bravery, Nerve, Chivalry",
+                ghost: "Nearly Headless Nick",
+                commonRoom: "Gryffindor Tower",
+                head: "Minerva McGonagall",
+                points: 0,
+                image: "images/gryffindor-full.png", // REPLACE WITH YOUR FULL GRYFFINDOR IMAGE
+                description: "Gryffindor values bravery, daring, nerve, and chivalry. Its emblematic animal is the lion and its colours are scarlet and gold."
+            },
+            slytherin: {
+                name: "Slytherin",
+                founder: "Salazar Slytherin",
+                colors: "Green and Silver",
+                animal: "Serpent",
+                traits: "Cunning, Ambition, Resourcefulness",
+                ghost: "The Bloody Baron",
+                commonRoom: "The Dungeons",
+                head: "Severus Snape",
+                points: 0,
+                image: "images/slytherin-full.png", // REPLACE WITH YOUR FULL SLYTHERIN IMAGE
+                description: "Slytherin values ambition, cunning, leadership, and resourcefulness. Its emblematic animal is the serpent and its colours are green and silver."
+            },
+            ravenclaw: {
+                name: "Ravenclaw",
+                founder: "Rowena Ravenclaw",
+                colors: "Blue and Bronze",
+                animal: "Eagle",
+                traits: "Intelligence, Wisdom, Creativity",
+                ghost: "The Grey Lady",
+                commonRoom: "Ravenclaw Tower",
+                head: "Filius Flitwick",
+                points: 0,
+                image: "images/ravenclaw-full.png", // REPLACE WITH YOUR FULL RAVENCLAW IMAGE
+                description: "Ravenclaw values intelligence, knowledge, curiosity, creativity and wit. Its emblematic animal is the eagle and its colours are blue and bronze."
+            },
+            hufflepuff: {
+                name: "Hufflepuff",
+                founder: "Helga Hufflepuff",
+                colors: "Yellow and Black",
+                animal: "Badger",
+                traits: "Hard Work, Patience, Loyalty",
+                ghost: "The Fat Friar",
+                commonRoom: "The Basement",
+                head: "Pomona Sprout",
+                points: 0,
+                image: "images/hufflepuff-full.png", // REPLACE WITH YOUR FULL HUFFLEPUFF IMAGE
+                description: "Hufflepuff values hard work, dedication, patience, loyalty, and fair play. Its emblematic animal is the badger and its colours are yellow and black."
+            }
+        };
+        
+        function showHouseInfo(house) {
+            // Switch to houses tab
+            tabBtns.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            document.querySelector('[data-tab="houses"]').classList.add('active');
+            document.getElementById('houses').classList.add('active');
+            
+            // Load house details
+            loadHouseDetails(house);
+        }
+        
+        function loadHouseDetails(houseToShow = null) {
+            const houseDetails = document.getElementById('house-details');
+            houseDetails.innerHTML = '';
+            
+            if (houseToShow) {
+                // Show specific house
+                const house = houses[houseToShow];
+                houseDetails.innerHTML = `
+                    <div style="background: rgba(255,255,255,0.9); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                            <div style="flex: 1; min-width: 300px;">
+                                <img src="${house.image}" alt="${house.name}" style="width: 100%; border-radius: 10px;">
+                            </div>
+                            <div style="flex: 2; min-width: 300px;">
+                                <h2 style="color: ${houseToShow === 'gryffindor' ? 'var(--gryffindor-red)' : 
+                                    houseToShow === 'slytherin' ? 'var(--slytherin-green)' : 
+                                    houseToShow === 'ravenclaw' ? 'var(--ravenclaw-blue)' : 
+                                    'var(--hufflepuff-yellow)'}; margin-top: 0;">
+                                    ${house.name}
+                                </h2>
+                                <p><strong>Founder:</strong> ${house.founder}</p>
+                                <p><strong>Colors:</strong> ${house.colors}</p>
+                                <p><strong>Animal:</strong> ${house.animal}</p>
+                                <p><strong>Traits:</strong> ${house.traits}</p>
+                                <p><strong>Ghost:</strong> ${house.ghost}</p>
+                                <p><strong>Common Room:</strong> ${house.commonRoom}</p>
+                                <p><strong>Head:</strong> ${house.head}</p>
+                                <p>${house.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="loadHouseDetails()" style="padding: 10px 20px; background: #5d2e0a; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
+                        Back to All Houses
+                    </button>
+                `;
+            } else {
+                // Show all houses
+                for (const [key, house] of Object.entries(houses)) {
+                    houseDetails.innerHTML += `
+                        <div class="house-card ${key}" onclick="showHouseInfo('${key}')" style="margin-bottom: 20px; cursor: pointer;">
+                            <img src="images/${key}.jpg" alt="${house.name}" class="house-img">
+                            <div class="house-info">
+                                <h3>${house.name}</h3>
+                                <p><strong>Traits:</strong> ${house.traits}</p>
+                                <p>${house.description.substring(0, 100)}...</p>
+                                <p style="color: #5d2e0a; font-weight: bold; text-align: right;">Click for details →</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        // Sorting Hat
+        const sortingHat = document.getElementById('sortingHat');
+        const sortMeBtn = document.getElementById('sortMeBtn');
+        const sortingResult = document.getElementById('sortingResult');
+        const houseResult = document
